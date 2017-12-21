@@ -1,4 +1,4 @@
-package com.celery.semantic.dsl.ybnf;
+package com.celery.semantic.dsl.bnf;
 
 import com.celery.semantic.dsl.domain.ParserQuery;
 import com.celery.semantic.dsl.domain.Result;
@@ -16,11 +16,11 @@ import com.celery.semantic.dsl.parser.impl.SPACE;
 import com.celery.semantic.dsl.parser.impl.WORD;
 import com.celery.semantic.dsl.parser.impl.ZeroOrMany;
 
-public class YbnfBuilder {
-	private static YbnfBuilder instance = null;
+public class BnfBuilder {
+	private static BnfBuilder instance = null;
 	private ParserQuery parserQuery;
 
-	private YbnfBuilder() {
+	private BnfBuilder() {
 		Parser NUMBER = new OneOrMany(new DIGIT());
 		Parser SPACE = new OneOrMany(new SPACE());
 		Parser _SPACE = new ZeroOrMany(new SPACE());
@@ -36,7 +36,7 @@ public class YbnfBuilder {
 		VERSION = new NamedParser("VERSION", VERSION);
 		Parser CHARSET = new ORR(new WORD("utf8"), new WORD("utf-8"), new WORD("UTF8"), new WORD("UTF-8"));
 		CHARSET = new NamedParser("CHARSET", CHARSET);
-		Parser HEAD = new GROUP(new WORD("#YBNF"), SPACE, VERSION, SPACE, CHARSET, SEMICOLON);
+		Parser HEAD = new GROUP(new WORD("#BNF"), SPACE, VERSION, SPACE, CHARSET, SEMICOLON);
 		// #include classpath:aaa/bbb/ccc.ybnf;
 
 		// service common;
@@ -68,11 +68,11 @@ public class YbnfBuilder {
 		parserQuery = new ParserQuery(root);
 	}
 
-	public static YbnfBuilder build() {
+	public static BnfBuilder build() {
 		if (instance == null) {
-			synchronized (YbnfBuilder.class) {
+			synchronized (BnfBuilder.class) {
 				if (instance == null) {
-					instance = new YbnfBuilder();
+					instance = new BnfBuilder();
 				}
 			}
 		}
